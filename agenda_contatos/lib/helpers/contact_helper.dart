@@ -37,7 +37,7 @@ class ContactHelper {
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
       await db.execute(
-          "CREATE TABLE $contactTable($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT"
+          "CREATE TABLE $contactTable($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT,"
           "$phoneColumn TEXT, $imgColumn TEXT)");
     });
   }
@@ -102,6 +102,8 @@ class Contact {
   String? img;
 
   //Construtor //Pegou de um mapa e  passou para o contato
+  Contact();
+  
   Contact.fromMap(Map map) {
     id = map[idColumn];
     name = map[nameColumn];
