@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                       contacts[index].phone ?? "",
                       style:
                           TextStyle(fontSize: 18,),
-                    )
+                    ),
                   ],
                 ),
               )
