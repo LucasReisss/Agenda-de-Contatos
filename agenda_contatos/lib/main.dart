@@ -8,7 +8,7 @@ void main() {
     theme: ThemeData(
       primaryColor: Colors.green[800],
       accentColor: Colors.green[600],
-      brightness: Brightness.dark
+      brightness: Brightness.light
     ),
     home: HomePage(),
   ));
