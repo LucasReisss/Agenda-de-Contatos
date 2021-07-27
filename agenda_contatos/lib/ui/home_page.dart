@@ -97,7 +97,73 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       onTap: () {
-        _showContactPage(contact: contacts[index]);
+        _showOptions(context, index);
+      },
+    );
+  }
+
+  void _showOptions(BuildContext context, int index) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return BottomSheet(
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Ligar",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 2,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showContactPage(contact: contacts[index]);
+                    },
+                    child: Text(
+                      "Editar",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 2,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      helper.deleteContact(contacts[index].id!);
+                      setState(() {
+                        contacts.removeAt(index);
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: Text(
+                      "Excluir",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+          onClosing: () {},
+        );
       },
     );
   }
