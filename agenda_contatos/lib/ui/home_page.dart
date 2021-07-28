@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:agenda_contatos/helpers/contact_helper.dart';
 import 'package:agenda_contatos/ui/contact_page.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+enum OrderOptions { az, za }
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -30,6 +33,21 @@ class _HomePageState extends State<HomePage> {
         title: Text("Contatos"),
         backgroundColor: Colors.green,
         centerTitle: true,
+        actions: [
+          PopupMenuButton<OrderOptions>(
+            itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
+              const PopupMenuItem<OrderOptions>(
+                child: Text("Ordenar de A-Z"),
+                value: OrderOptions.az,
+              ),
+              const PopupMenuItem<OrderOptions>(
+                child: Text("Ordenar de Z-A"),
+                value: OrderOptions.za,
+              ),
+            ],
+            onSelected: _orderList,
+          ),
+        ],
       ),
       backgroundColor: Colors.grey[100],
       floatingActionButton: FloatingActionButton(
@@ -64,8 +82,8 @@ class _HomePageState extends State<HomePage> {
                     image: DecorationImage(
                         image: contacts[index].img != null
                             ? FileImage(File(contacts[index].img!))
-                            : AssetImage("images/perfil.png")
-                                as ImageProvider)),
+                            : AssetImage("images/perfil.png") as ImageProvider,
+                        fit: BoxFit.cover)),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
@@ -114,7 +132,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      launch("tel:${contacts[index].phone}");
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       "Ligar",
                       style: TextStyle(
@@ -193,5 +214,21 @@ class _HomePageState extends State<HomePage> {
         contacts = list as List<Contact>;
       });
     });
+  }
+
+  void _orderList(OrderOptions result) {
+    switch (result) {
+      case OrderOptions.az:
+        contacts.sort((a, b) {
+          return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+        });
+        break;
+      case OrderOptions.za:
+        contacts.sort((a, b) {
+          return b.name!.toLowerCase().compareTo(a.name!.toLowerCase());
+        });
+        break;
+    }
+    setState(() {});
   }
 }
